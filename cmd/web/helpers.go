@@ -30,7 +30,8 @@ func (app *application) notFound(w http.ResponseWriter) {
 	app.clientError(w, http.StatusNotFound)
 }
 
-func (app *application) render(w http.ResponseWriter, status int, page string, data *templateData) { // Retrieve the appropriate template set from the cache based on the page
+func (app *application) render(w http.ResponseWriter, status int, page string, data *templateData) {
+	// Retrieve the appropriate template set from the cache based on the page
 	ts, ok := app.templateCache[page]
 	if !ok {
 		err := fmt.Errorf("the template %s does not exist", page)
@@ -82,4 +83,8 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 	}
 
 	return nil
+}
+
+func (app *application) isAuthenticated(r *http.Request) bool {
+	return app.sessionManager.Exists(r.Context(), "authenticatedUserID")
 }

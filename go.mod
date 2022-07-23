@@ -10,3 +10,8 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/justinas/alice v1.2.0
 )
+
+require (
+	github.com/justinas/nosurf v1.1.1 // indirect
+	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
+)
