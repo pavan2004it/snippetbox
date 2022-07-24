@@ -4,6 +4,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
 	"net/http"
+	"snippetbox.nubewired.net/ui"
 )
 
 func (app *application) routes() http.Handler {
@@ -14,12 +15,12 @@ func (app *application) routes() http.Handler {
 			app.notFound(w)
 		})
 
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
+	fileServer := http.FileServer(http.FS(ui.Files))
 
-	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
+	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
 
 	// Unprotected application routes using the "dynamic" middleware chain.
-	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf)
+	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
 
 	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))
 
