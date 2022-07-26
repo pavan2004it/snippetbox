@@ -34,7 +34,8 @@ var functions = template.FuncMap{
 	"humanDate": humanDate,
 }
 
-func newTemplateCache() (map[string]*template.Template, error) { // Initialize a new map to act as the cache.
+func newTemplateCache() (map[string]*template.Template, error) {
+	// Initialize a new map to act as the cache.
 	cache := map[string]*template.Template{}
 	// Walk the template files and parse them.
 	pages, err := fs.Glob(ui.Files, "html/pages/*.tmpl")
